@@ -36,5 +36,9 @@ module TrailblazerShowcase
         resource '*', :headers => :any, :methods => [:get, :post, :options]
       end
     end
+
+    config.generators do |g|
+      g.test_framework :minitest, spec: false, fixture: false
+    end
   end
 end

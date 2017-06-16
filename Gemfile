@@ -17,11 +17,9 @@ gem 'webpacker'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 
-gem "trailblazer"
 gem "trailblazer-rails"
-gem 'trailblazer-loader'
 gem "trailblazer-cells"
-gem 'reform'
+gem "dry-validation"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -33,8 +31,12 @@ gem 'reform'
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
 
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'minitest'
+  gem 'minitest-rails'
+  gem "minitest-rails-capybara"
   gem 'pry', platforms: [:mri, :mingw, :x64_mingw]
 end
 

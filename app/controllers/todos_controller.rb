@@ -15,13 +15,7 @@ class TodosController < ApplicationController
   # POST /todos
   # POST /todos.json
   def create
-    @todo = Todo.new(todo_params)
-
-    if @todo.save
-      render :show, status: :created, location: @todo
-    else
-      render json: @todo.errors, status: :unprocessable_entity
-    end
+    run Todo::Create
   end
 
   # PATCH/PUT /todos/1
