@@ -12,14 +12,13 @@ gem 'rails', '~> 5.1.1'
 gem 'sqlite3'
 # Use Puma as the app server
 gem 'puma', '~> 3.7'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 
 gem "trailblazer-rails"
 gem "trailblazer-cells"
 gem "dry-validation"
+gem "carrierwave"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password

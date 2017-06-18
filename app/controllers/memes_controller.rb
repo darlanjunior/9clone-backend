@@ -1,10 +1,20 @@
 class MemesController < ApplicationController
   def index
-    render json: {urls: [
-      "https://img-9gag-fun.9cache.com/photo/aRj6V6q_460s.jpg",
-      "https://img-9gag-fun.9cache.com/photo/aeeKpjm_460s.jpg",
-      "https://img-9gag-fun.9cache.com/photo/aeeKjXb_460s.jpg"
-      ]
-    }
+    urls = Meme
+      .all
+      .order(:created_at)
+      .reverse
+      .map(&:file)
+      .map(&:url)
+
+    render json: {urls: urls}
+  end
+
+  def create
+    param = params.permit(:title, :file)
+    m = Meme.new
+    m.file = params[:file]
+    m.title = params[:title]
+    render json: {result: m.save}
   end
 end

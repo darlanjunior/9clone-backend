@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
   resources :todos
-  get '/memes' => 'memes#index'
+  resources :memes, only: [:index, :create]
 end
