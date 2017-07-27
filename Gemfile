@@ -16,8 +16,8 @@ gem 'puma', '~> 3.7'
 gem 'jbuilder', '~> 2.5'
 
 gem "trailblazer-rails"
-gem "trailblazer-cells"
 gem "dry-validation"
+gem 'roar-jsonapi'
 gem "carrierwave"
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'

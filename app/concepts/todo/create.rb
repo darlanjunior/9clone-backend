@@ -1,4 +1,3 @@
-
 require_relative "./contract/create"
 class Todo::Create < Trailblazer::Operation
   step Policy::Guard( :authorize )
