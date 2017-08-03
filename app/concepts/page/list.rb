@@ -1,39 +1,58 @@
 class Page::List < Trailblazer::Operation
-  # extend Contract::DSL
-  # contract do
-  #   property :page
-  #   property :items_per_page
-  #   property :search_term
-  #   property :ordering
-  # end
+  extend Contract::DSL
 
+  page_request_contract = Struct.new(
+    :page,
+    :searchable_fields,
+    :items_per_page,
+    :search_term,
+    :order_by,
+    :model
+  )
+
+  contract do
+    page_request_contract.members.each {|prop| property prop}
+
+    validates :model, presence: true
+    validates :searchable_fields, presence: true
+    validates :page, presence: true, numericality: true
+    validates :items_per_page, presence: true, numericality: true
+  end
+
+  step Model(page_request_contract)
+  step Contract::Build()
+  step Contract::Validate()
   step :assemble_query!
   step :model!
 
-  def assemble_query!(options, *)
-    search_term = options['params']['search_term']
+  def assemble_query!(options, params:, **)
+    fields = params['searchable_fields']
+    search_term = params['search_term']
 
-    model = options['model']
-    searchable_fields = options['searchable_fields']
-
-    search_params(searchable_fields, search_term)
+    options['query'] = search_term ? fields_to_sql(fields) : ''
+    options['search'] = search_term ? search_term_to_sql(search_term, fields.size) : ''
   end
 
-  def model!(options, *)
-    page = options['params']['page']
-    items_per_page = options['params']['items_per_page']
-    ordering = options['params']['ordering']
-    search = options['search']
+  def model!(options, params:, query:, search:, **)
+    page = params['page'].to_i
+    items_per_page = params['items_per_page'].to_i
+    order_by = params['order_by']
+    model = params['model']
 
-    model
-      .where(search)
-      .order(ordering)
-      .limit(items_per_page)
-      .offset(page*items_per_page)
+    offset = (page-1)*items_per_page
+    results = model.limit(items_per_page).offset(offset)
+    results = results.where(query, *search) if !search.blank?
+    results = results.order(order_by) if order_by
+
+    options['result'] = results
   end
 
   private
-  def search_params fields, term
-    fields.reduce({}) {|acc, f| acc.merge({f => term}) }
+  def fields_to_sql fields
+    fields.map {|f| "#{f} like ?"}.join ' or '
+  end
+
+  def search_term_to_sql term, times
+    ["%#{term}%"]*times
   end
 end
