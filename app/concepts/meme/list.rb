@@ -1,5 +1,22 @@
 require_relative './representer/memes_representer'
 class Meme::List < Trailblazer::Operation
-  step Policy::Guard( :authorize )
-  # step MemesRepresenter.for_collection.prepare(Meme.all).to_json
+  step :set_variables!
+  step Nested( Page::List )
+  step :filter!
+  step :represent!
+
+  def set_variables!(options, **)
+    options['params']['model'] = ::Meme
+    options['params']['searchable_fields'] = [:title]
+    options['params']['page'] = 1 if !options['params']['page']
+    options['params']['items_per_page'] = 5 if !options['params']['items_per_page']
+  end
+
+  def filter!(options, result:, **)
+    options['result'] = options['result'].where('created_at > ?', 10.days.ago)
+  end
+
+  def represent!(options, result:, **)
+    options['result.json'] = MemesRepresenter.for_collection.new(result).to_json
+  end
 end

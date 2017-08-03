@@ -1,13 +1,8 @@
 class MemesController < ApplicationController
   def index
-    urls = Meme
-      .all
-      .order(:created_at)
-      .reverse
-      .map(&:file)
-      .map(&:url)
-
-    render json: {urls: urls}
+    result = Meme::List.(params, page: 1, items_per_page: 5)
+    p result
+    render json: result['result.json']
   end
 
   def create
