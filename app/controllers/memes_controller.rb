@@ -1,7 +1,6 @@
 class MemesController < ApplicationController
   def index
-    result = Meme::List.(params, page: 1, items_per_page: 5)
-    p result
+    result = Meme::List.(params)
     render json: result['result.json']
   end
 

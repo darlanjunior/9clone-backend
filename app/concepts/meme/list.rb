@@ -2,7 +2,6 @@ require_relative './representer/memes_representer'
 class Meme::List < Trailblazer::Operation
   step :set_variables!
   step Nested( Page::List )
-  step :filter!
   step :represent!
 
   def set_variables!(options, **)
@@ -10,10 +9,7 @@ class Meme::List < Trailblazer::Operation
     options['params']['searchable_fields'] = [:title]
     options['params']['page'] = 1 if !options['params']['page']
     options['params']['items_per_page'] = 5 if !options['params']['items_per_page']
-  end
-
-  def filter!(options, result:, **)
-    options['result'] = options['result'].where('created_at > ?', 10.days.ago)
+    p options['params']
   end
 
   def represent!(options, result:, **)
