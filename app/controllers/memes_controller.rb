@@ -5,10 +5,7 @@ class MemesController < ApplicationController
   end
 
   def create
-    param = params.permit(:title, :file)
-    m = Meme.new
-    m.file = params[:file]
-    m.title = params[:title]
-    render json: {result: m.save}
+    result = Meme::Create.(params)
+    render json: result['result.json'], status: result.success? ? :ok : :unprocessable_entity
   end
 end
