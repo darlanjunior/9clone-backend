@@ -2,6 +2,7 @@ require_relative './representer/memes_representer'
 class Meme::List < Trailblazer::Operation
   step :set_variables!
   step Nested( Page::List )
+  step :sort!
   step :represent!
 
   def set_variables!(options, **)
@@ -10,6 +11,10 @@ class Meme::List < Trailblazer::Operation
     options['params']['page'] = 1 if !options['params']['page']
     options['params']['items_per_page'] = 5 if !options['params']['items_per_page']
     p options['params']
+  end
+
+  def sort!(options, **)
+    options['result'] = options['result'].order(created_at: :desc)
   end
 
   def represent!(options, result:, **)
