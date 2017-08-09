@@ -33,7 +33,7 @@ RSpec.describe Page::List do
       Page::List.new.send(:assemble_query!, options, params: params)
     end
     it 'adds the search query to options' do
-      expect(options['query']).to eq 'a like ? or b like ?'
+      expect(options[:query]).to eq 'a like ? or b like ?'
     end
   end
 
@@ -74,7 +74,7 @@ RSpec.describe Page::List do
       it { expect(model).to receive(:limit).with(10) }
       it { expect(model).to receive(:order).with(:field_a) }
       it { is_expected.to be_success }
-      it { expect(subject['result']).to eq(model) }
+      it { expect(subject[:result]).to eq(model) }
     end
 
     context 'with no search and no ordering' do
@@ -92,7 +92,7 @@ RSpec.describe Page::List do
       it { expect(model).to receive(:offset).with(4*10) }
       it { expect(model).to receive(:limit).with(10) }
       it { is_expected.to be_success }
-      it { expect(subject['result']).to eq(model) }
+      it { expect(subject[:result]).to eq(model) }
     end
   end
 end

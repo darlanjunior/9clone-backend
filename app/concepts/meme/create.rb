@@ -18,14 +18,14 @@ class Meme::Create < Trailblazer::Operation
   success :represent_result!
 
   def handle_validation_errors!(options, **)
-    options['result.json'] = {
+    options[:'result.json'] = {
       success: false,
       errors: options['result.contract.default'].errors
     }.to_json
   end
 
   def represent_result!(options, **)
-    options['result.json'] = {
+    options[:'result.json'] = {
       success: true,
       errors: []
     }

@@ -26,25 +26,26 @@ class Page::List < Trailblazer::Operation
   step :model!
 
   def assemble_query!(options, params:, **)
-    fields = params['searchable_fields']
-    search_term = params['search_term']
+    fields = params[:searchable_fields]
+    search_term = params[:search_term]
 
-    options['query'] = search_term ? fields_to_sql(fields) : ''
-    options['search'] = search_term ? search_term_to_sql(search_term, fields.size) : ''
+    options[:query] = search_term ? fields_to_sql(fields) : ''
+    options[:search] = search_term ? search_term_to_sql(search_term, fields.size) : ''
   end
 
   def model!(options, params:, query:, search:, **)
-    page = params['page'].to_i
-    items_per_page = params['items_per_page'].to_i
-    order_by = params['order_by']
-    model = params['model']
+    page = params[:page].to_i
+    items_per_page = params[:items_per_page].to_i
+    order_by = params[:order_by]
+    model = params[:model]
 
+    p items_per_page
     offset = (page-1)*items_per_page
     results = model.limit(items_per_page).offset(offset)
     results = results.where(query, *search) if !search.blank?
     results = results.order(order_by) if order_by
 
-    options['result'] = results
+    options[:result] = results
   end
 
   private
