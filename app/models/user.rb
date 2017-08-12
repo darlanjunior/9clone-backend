@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-  devise :database_authenticatable, :recoverable
+  devise :database_authenticatable, :recoverable, :validatable
   include DeviseTokenAuth::Concerns::User
   mount_uploader :picture, PictureUploader
 

@@ -1,3 +1,3 @@
 class Poster < User
-  devise :registerable, :validatable, :confirmable
+  devise :registerable, :confirmable
 end
