@@ -3,8 +3,9 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
   mount_uploader :picture, PictureUploader
 
-  def as_json except:
+  def as_json(except: nil, prefixes: nil, template: nil)
     {
+      id: self.id,
       email: self.email,
       description: self.description,
       name: self.name,
